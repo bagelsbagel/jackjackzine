@@ -4,6 +4,6 @@
 
 by eileen lee
 
-designed & built in november 2026, with html / css / javascript
+designed & built in november 2026 with html / css / js
 
 dedicated to 짹짹, flying high
