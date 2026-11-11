@@ -1,20 +1,36 @@
-html, body {
-  margin: 0;
-  padding: 0;
+body {
+  background-color: rgb(237, 241, 238);
+  padding: 40px;
+  font-family: "Times New Roman", serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.25rem;
 }
 
-canvas {
-  display: block;
-}
-
-.instrument-serif-regular {
-  font-family: "Instrument Serif", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.instrument-serif-regular-italic {
+h1 {
   font-family: "Instrument Serif", serif;
   font-weight: 400;
   font-style: italic;
+  font-size: 3rem;
+}
+
+:lang(kr) {
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.spiral {
+  position: relative;
+  top: 50%;
+  left: 50%;
+}
+
+.dot {
+  position: absolute;
+  width: 40px;
+  height: 25px;
+  background: rgb(123, 197, 111);
+  transform:
+    rotate(calc(360deg * 3 / var(--n) * var(--i)))
+    translateY(calc(-2.9 * (10vh - 7vh * var(--i) / var(--n))))
+    scale(calc(.4 - .25 * var(--i) / var(--n)));
 }
