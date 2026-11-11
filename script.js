@@ -1,29 +1,34 @@
-let backgroundColor = ['rgb(215, 236, 220)', 'rgb(233, 233, 233)', 'rgb(205, 222, 251)']
-let symbols = ['𓅪','✴︎','☆']
+const n = 150;
+const turns = 4.5;
+const rInner = 0.02;
+const curve = 1.2;
+const dotSize = 30;
 
-async function setup() {
-  p5.fillGradient.setup();
+function setup() {
+  createCanvas(windowWidth, windowHeight);
   p5grain.setup();
+  noLoop();
 }
 
-const n = 100;        // number of shapes
-const turns = 4.1;    // how many times it winds around
-const rInner = 0.05;  // radius at the center (fraction of outer)
-const curve = 1.2;    // 1 = even spacing, >1 = tighter toward the center
-const R = Math.min(innerWidth, innerHeight) * 0.42; // outer radius in px
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  redraw();
+}
 
-const spiral = document.querySelector(".spiral");
+function draw() {
+  noStroke();
+  fill(0);
 
-for (let i = 0; i < n; i++) {
-  const t = i / (n - 1);                           // 0 = outside, 1 = center
-  const angle = t * turns * Math.PI * 2;
-  const r = R * (rInner + (1 - rInner) * (1 - t) ** curve);
-  const x = Math.cos(angle) * r;
-  const y = Math.sin(angle) * r;
-  const size = 1 - 0.7 * t;                        // shapes shrink inward
+  // fits inside the window: smaller side, minus room for the outer dot
+  const R = Math.min(width, height) / 2 - dotSize / 2;
 
-  const dot = document.createElement("div");
-  dot.className = "dot";
-  dot.style.transform = `translate(${x}px, ${y}px) scale(${size})`;
-  spiral.append(dot);
+  push();
+  translate(width / 2, height / 2);
+  for (let i = 0; i < n; i++) {
+    const t = i / (n - 1);
+    const angle = t * turns * TWO_PI;
+    const r = R * (rInner + (1 - rInner) * (1 - t) ** curve);
+    circle(Math.cos(angle) * r, Math.sin(angle) * r, dotSize * (1 - 0.7 * t));
+  }
+  pop();
 }
