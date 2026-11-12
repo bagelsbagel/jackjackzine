@@ -5,6 +5,7 @@ const rInner = 0.02;
 const curve = 1.2;
 const dotSize = 30;
 const symbols = ["⋆✴︎˚", "𓄿", "𓅪", " ོ"]
+let spiralColor;
 
 function pickColors() {
   var bgColors = ["rgb(242, 242, 242)", "rgb(249, 255, 230)", "rgb(233, 247, 255)", "rgb(255, 255, 229)", "rgb(255, 245, 252)"];
@@ -14,14 +15,14 @@ function pickColors() {
   var textColor = textColors[randNum];
   document.body.style.background = bgColor;
   document.body.style.color = textColor;
-  //change circle colors in draw() function
+  return textColors[randNum];
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   p5grain.setup();
   noLoop();
-  pickColors();
+  spiralColor = pickColors();
 }
 
 function windowResized() {
@@ -31,7 +32,7 @@ function windowResized() {
 
 function draw() {
   noStroke();
-  fill(0);
+  fill(spiralColor);
 
   //make the spiral
   const R = Math.min(width, height) / 2 - dotSize / 2;
@@ -45,5 +46,5 @@ function draw() {
     circle(Math.cos(angle) * r, Math.sin(angle) * r, dotSize * (1 - 0.7 * t));
   }
   pop();
-  //applyMonochromaticGrain(20);
+  applyMonochromaticGrain(16);
 }
