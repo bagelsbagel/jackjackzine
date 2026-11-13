@@ -1,10 +1,10 @@
 // variables for spiral
-const n = 100;
+const n = 200;
 const turns = 4.5;
 const rInner = 0.02;
 const curve = 1.2;
-const dotSize = 30;
-const symbols = ["⋆✴︎˚", "𓄿", "𓅪", " ོ"]
+const symbolSize = 50;
+const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
 let spiralColor;
 
 function pickColors() {
@@ -35,18 +35,29 @@ function draw() {
   fill(spiralColor);
 
   //make the spiral
-  const R = (Math.min(width, height) / 2 - dotSize / 2) * 0.9;
+  const fullCircleRadius = (Math.min(width, height) / 2 - symbolSize / 2) * 0.9;
 
   push();
   //position the spiral
   translate(width / 2, height / 2);
+  let prevX;
+  let prevY;
   for (let i = 0; i < n; i++) {
+    var symbolsNum = Math.floor(Math.random() * symbols.length);
+    var selectedSymbol = symbols[symbolsNum];
     const t = i / (n - 1);
     const angle = t * turns * TWO_PI;
-    const r = R * (rInner + (1 - rInner) * (1 - t) ** curve);
-    //replace circles with a mix of images & symbols from arrays
+    const r = fullCircleRadius * (rInner + (1 - rInner) * (1 - t) * curve);
     //interact with images to show text
-    circle(Math.cos(angle) * r, Math.sin(angle) * r, dotSize * (1 - 0.7 * t));
+    textSize(30);
+    let nextX = Math.cos(angle) * r;
+    let nextY = Math.sin(angle) * r;
+    const bufferDistance = 15; // Minimum distance between symbols
+    if (!prevX || !prevY || dist(prevX, prevY, nextX, nextY) > bufferDistance) {
+      text(selectedSymbol, nextX, nextY);
+      prevX = nextX;
+      prevY = nextY;
+    }
   }
   pop();
   applyMonochromaticGrain(16);
