@@ -1,22 +1,66 @@
 body {
-  margin: 0;
-  padding: 40px;
+/* font */
   font-family: "Times New Roman", serif;
   font-weight: 300;
   font-style: italic;
-  font-size: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* header text layout */
+header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+header h1 {
+  margin: 0;
+  text-align: left;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+
+header p {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  bottom: 40px;
+  width: 45vw;
+  margin: 0;
+  text-align: right;
+}
+
+/* shaped text matching spiral edges */
+header p::before {
+  content: "";
+  float: left;
+  width: 30vw;
+  height: 100vh;
+  shape-outside: ellipse(100% 50% at 0% 50%);
+}
+
+/* spiral canvas */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
 h1 {
   font-family: "Instrument Serif", serif;
   font-weight: 400;
   font-style: italic;
-  font-size: 3rem;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+p {
+  margin: 40px;
+  width: 20vh;
+  margin-left: auto;
+  text-align: right;
 }
 
 :lang(kr) {

@@ -1,5 +1,5 @@
 // variables for spiral
-const n = 150;
+const n = 100;
 const turns = 4.5;
 const rInner = 0.02;
 const curve = 1.2;
@@ -35,14 +35,17 @@ function draw() {
   fill(spiralColor);
 
   //make the spiral
-  const R = Math.min(width, height) / 2 - dotSize / 2;
+  const R = (Math.min(width, height) / 2 - dotSize / 2) * 0.9;
 
   push();
+  //position the spiral
   translate(width / 2, height / 2);
   for (let i = 0; i < n; i++) {
     const t = i / (n - 1);
     const angle = t * turns * TWO_PI;
     const r = R * (rInner + (1 - rInner) * (1 - t) ** curve);
+    //replace circles with a mix of images & symbols from arrays
+    //interact with images to show text
     circle(Math.cos(angle) * r, Math.sin(angle) * r, dotSize * (1 - 0.7 * t));
   }
   pop();
