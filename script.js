@@ -6,7 +6,8 @@ const curve = 1.2;
 const symbolSize = 50;
 const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
 const imageNames = ['images/baby.png', 'images/basket_nobg.png', 'images/chair.jpg', 'images/flower.jpg', 'images/onatree_nobg.png', 'images/onatree1.jpg', 'images/plushie1.jpg', 'images/plushie2.jpg', 'images/sleeping.jpg', 'images/teaching.jpg', 'images/vetvisit.jpg', 'images/wrapped.jpg'];
-const seed = new Date(); // storeItem and getItem
+
+const seed = new Date().getTime(); // storeItem and getItem
 
 let spiralColor;
 let img;
@@ -29,8 +30,6 @@ async function setup() {
   p5grain.setup();
   noLoop();
 
-  randomSeed(seed);
-
   spiralColor = pickColors();
   for (let i = 0; i < imageNames.length; i++) {
     images[i] = await loadImage(imageNames[i]);
@@ -39,10 +38,8 @@ async function setup() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
   imagesCopy = [...images];
-  randomSeed(seed);
-  redraw();
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function writeText() {
@@ -50,6 +47,7 @@ function writeText() {
 }
 
 function draw() {
+  randomSeed(seed);
   noStroke();
   fill(spiralColor);
 
