@@ -5,36 +5,54 @@ const rInner = 0.02;
 const curve = 1.2;
 const symbolSize = 50;
 const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
+const imageNames = ['images/baby.png', 'images/basket_nobg.png', 'images/chair.jpg', 'images/flower.jpg', 'images/onatree_nobg.png', 'images/onatree1.jpg', 'images/plushie1.jpg', 'images/plushie2.jpg', 'images/sleeping.jpg', 'images/teaching.jpg', 'images/vetvisit.jpg', 'images/wrapped.jpg'];
+const seed = new Date(); // storeItem and getItem
+
 let spiralColor;
+let img;
+let images = []; // do not delete contents
+let imagesCopy = [];
 
 function pickColors() {
+  // set background & text colors
   var bgColors = ["rgb(242, 242, 242)", "rgb(249, 255, 230)", "rgb(233, 247, 255)", "rgb(255, 255, 229)", "rgb(255, 245, 252)"];
   var textColors = ["rgb(48, 48, 48)", "rgb(99, 161, 23)", "rgb(40, 118, 163)", "rgb(203, 141, 55)", "rgb(217, 32, 183)"]; 
-  var randNum = Math.floor(Math.random() * bgColors.length);
-  var bgColor = bgColors[randNum];
-  var textColor = textColors[randNum];
+  var bgColor = random(bgColors);
+  var textColor = random(textColors);
   document.body.style.background = bgColor;
   document.body.style.color = textColor;
-  return textColors[randNum];
+  return textColor;
 }
 
-function setup() {
+async function setup() {
   createCanvas(windowWidth, windowHeight);
   p5grain.setup();
   noLoop();
+
+  randomSeed(seed);
+
   spiralColor = pickColors();
+  for (let i = 0; i < imageNames.length; i++) {
+    images[i] = await loadImage(imageNames[i]);
+  }
+  imagesCopy = [...images];
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  imagesCopy = [...images];
+  randomSeed(seed);
   redraw();
+}
+
+function writeText() {
+  document.getElementById("stories").innerHTML = random(stories);
 }
 
 function draw() {
   noStroke();
   fill(spiralColor);
 
-  //make the spiral
   const fullCircleRadius = (Math.min(width, height) / 2 - symbolSize / 2) * 0.9;
 
   push();
@@ -42,23 +60,37 @@ function draw() {
   translate(width / 2, height / 2);
   let prevX;
   let prevY;
+
   for (let i = 0; i < n; i++) {
-    var symbolsNum = Math.floor(Math.random() * symbols.length);
-    var selectedSymbol = symbols[symbolsNum];
+    const selectedSymbol = random(symbols);
     const t = i / (n - 1);
     const angle = t * turns * TWO_PI;
     const r = fullCircleRadius * (rInner + (1 - rInner) * (1 - t) * curve);
-    //interact with images to show text
+
     textSize(30);
-    let nextX = Math.cos(angle) * r;
-    let nextY = Math.sin(angle) * r;
-    const bufferDistance = 15; // Minimum distance between symbols
-    if (!prevX || !prevY || dist(prevX, prevY, nextX, nextY) > bufferDistance) {
-      text(selectedSymbol, nextX, nextY);
-      prevX = nextX;
-      prevY = nextY;
+    let currentX = Math.cos(angle) * r;
+    let currentY = Math.sin(angle) * r;
+    const bufferDistance = 15; // minimum distance between symbols
+    if (!prevX || !prevY || dist(prevX, prevY, currentX, currentY) > bufferDistance) {
+      // draw random symbols
+      text(selectedSymbol, currentX, currentY);
+      // draw random images selectively in spiral
+      if ((i % 17 === 0 || i % 25 === 0) && imagesCopy.length > 0) {
+        const randomIndex = floor(random(imagesCopy.length));
+        img = imagesCopy[randomIndex];
+      // delete the image at the randomIndex
+        imagesCopy.splice(randomIndex, 1);
+        image(img, currentX, currentY, 100, 100, 0, 0, img.width, img.height, CONTAIN);
+        const box = createDiv('');
+        box.position(currentX + width / 2, currentY + height / 2);
+        box.size(100, 100);
+        box.mouseOver(writeText);
+      }
+      prevX = currentX;
+      prevY = currentY;
     }
   }
+
   pop();
   applyMonochromaticGrain(16);
 }

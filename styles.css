@@ -21,7 +21,13 @@ header h1 {
   left: 40px;
 }
 
-header p {
+#stories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+#stories p {
   position: absolute;
   top: 40px;
   right: 40px;
@@ -32,7 +38,7 @@ header p {
 }
 
 /* shaped text matching spiral edges */
-header p::before {
+#stories p::before {
   content: "";
   float: left;
   width: 30vw;
