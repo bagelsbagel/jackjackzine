@@ -31,6 +31,7 @@ async function setup() {
   noLoop();
 
   spiralColor = pickColors();
+  // log images created
   for (let i = 0; i < imageNames.length; i++) {
     images[i] = await loadImage(imageNames[i]);
   }
@@ -54,6 +55,7 @@ function draw() {
   const fullCircleRadius = (Math.min(width, height) / 2 - symbolSize / 2) * 0.9;
 
   push();
+
   //position the spiral
   translate(width / 2, height / 2);
   let prevX;
@@ -66,8 +68,10 @@ function draw() {
     const r = fullCircleRadius * (rInner + (1 - rInner) * (1 - t) * curve);
 
     textSize(30);
+
     let currentX = Math.cos(angle) * r;
     let currentY = Math.sin(angle) * r;
+
     const bufferDistance = 15; // minimum distance between symbols
     if (!prevX || !prevY || dist(prevX, prevY, currentX, currentY) > bufferDistance) {
       // draw random symbols
@@ -79,16 +83,20 @@ function draw() {
       // delete the image at the randomIndex
         imagesCopy.splice(randomIndex, 1);
         image(img, currentX, currentY, 100, 100, 0, 0, img.width, img.height, CONTAIN);
+
+      // create invisible box above images
         const box = createDiv('');
         box.position(currentX + width / 2, currentY + height / 2);
         box.size(100, 100);
+      // hover over image, writes text
         box.mouseOver(writeText);
       }
+
       prevX = currentX;
       prevY = currentY;
     }
   }
 
   pop();
-  applyMonochromaticGrain(16);
+  applyMonochromaticGrain(18);
 }
