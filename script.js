@@ -6,18 +6,19 @@ const curve = 1.2;
 const symbolSize = 50;
 const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
 const imageNames = ['images/baby.png', 'images/basket_nobg.png', 'images/chair.jpg', 'images/flower.jpg', 'images/onatree_nobg.png', 'images/onatree1.jpg', 'images/plushie1.jpg', 'images/plushie2.jpg', 'images/sleeping.jpg', 'images/teaching.jpg', 'images/vetvisit.jpg', 'images/wrapped.jpg'];
-
+const sleep = ms => new Promise(res => setTimeout(res, ms));
 const seed = new Date().getTime(); // storeItem and getItem
 
 let spiralColor;
 let img;
 let images = []; // do not delete contents
 let imagesCopy = [];
+let hasResizedWindow = false;
 
 function pickColors() {
   // set background & text colors
   var bgColors = ["rgb(242, 242, 242)"];
-  var textColors = ["rgb(48, 48, 48)"]; 
+  var textColors = ["rgb(0, 0, 0)"]; 
   var bgColor = random(bgColors);
   var textColor = random(textColors);
   // document.body.style.background = bgColor;
@@ -26,9 +27,10 @@ function pickColors() {
 }
 
 async function setup() {
+  loadingAnimation();
+  randomSeed(seed);
   createCanvas(windowWidth, windowHeight);
   p5grain.setup();
-  noLoop();
 
   spiralColor = pickColors();
   // log images created
@@ -36,42 +38,52 @@ async function setup() {
     images[i] = await loadImage(imageNames[i]);
   }
   imagesCopy = [...images];
+
+  await drawSpiral(true, 30);
+  noLoop();
 }
 
 function windowResized() {
   imagesCopy = [...images];
   resizeCanvas(windowWidth, windowHeight);
+  hasResizedWindow = true;
 }
 
 function writeText() {
-  document.getElementById("stories").innerHTML = random(stories);
+  document.getElementById("stories").innerHTML = stories[0];
 }
 
 function draw() {
+  imagesCopy = [...images];
+  drawSpiral();
+  applyMonochromaticGrain(16);
+}
+
+async function drawSpiral(isAnimating, delay) {
+  randomSeed(seed);
   fillGradient('linear', {
   from: [0, 0],
   to: [0, height],
   steps: [
-    color("rgb(202, 202, 202)"),
+    color("rgb(122, 122, 122)"),
     color("rgb(255, 255, 255)"),
-    color("rgb(202, 202, 202)")
+    color("rgb(88, 88, 88)")
   ]
-  })
+  });
+
   noStroke();
   rect(0, 0, width, height);
 
-  fill("rgb(48, 48, 48)")
-
-  randomSeed(seed);
   noStroke();
-  fill(spiralColor);
+  // fill(spiralColor);
 
+  //position the spiral
+  translate(width / 2, height / 2);
   const fullCircleRadius = (Math.min(width, height) / 2 - symbolSize / 2) * 0.9;
 
   push();
 
   //position the spiral
-  translate(width / 2, height / 2);
   let prevX;
   let prevY;
 
@@ -90,6 +102,10 @@ function draw() {
     if (!prevX || !prevY || dist(prevX, prevY, currentX, currentY) > bufferDistance) {
       // draw random symbols
       text(selectedSymbol, currentX, currentY);
+      // check if user resizes window, if they do stop the animation
+      if (isAnimating && !hasResizedWindow) {
+        await sleep(delay);
+      }
       // draw random images selectively in spiral
       if ((i % 17 === 0 || i % 25 === 0) && imagesCopy.length > 0) {
         const randomIndex = floor(random(imagesCopy.length));
@@ -112,5 +128,4 @@ function draw() {
   }
 
   pop();
-  applyMonochromaticGrain(16);
 }
