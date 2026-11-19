@@ -6,25 +6,14 @@ const curve = 1.2;
 const symbolSize = 50;
 const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
 const imageNames = ['images/baby.png', 'images/basket_nobg.png', 'images/chair.jpg', 'images/flower.jpg', 'images/onatree_nobg.png', 'images/onatree1.jpg', 'images/plushie1.jpg', 'images/plushie2.jpg', 'images/sleeping.jpg', 'images/teaching.jpg', 'images/vetvisit.jpg', 'images/wrapped.jpg'];
+// make delay for spiral animationm
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 const seed = new Date().getTime(); // storeItem and getItem
 
-let spiralColor;
 let img;
 let images = []; // do not delete contents
 let imagesCopy = [];
 let hasResizedWindow = false;
-
-function pickColors() {
-  // set background & text colors
-  var bgColors = ["rgb(242, 242, 242)"];
-  var textColors = ["rgb(0, 0, 0)"]; 
-  var bgColor = random(bgColors);
-  var textColor = random(textColors);
-  // document.body.style.background = bgColor;
-  // document.body.style.color = textColor;
-  return textColor;
-}
 
 async function setup() {
   loadingAnimation();
@@ -32,7 +21,6 @@ async function setup() {
   createCanvas(windowWidth, windowHeight);
   p5grain.setup();
 
-  spiralColor = pickColors();
   // log images created
   for (let i = 0; i < imageNames.length; i++) {
     images[i] = await loadImage(imageNames[i]);
@@ -45,11 +33,13 @@ async function setup() {
 
 function windowResized() {
   imagesCopy = [...images];
+  // check if canvas was resized
   resizeCanvas(windowWidth, windowHeight);
   hasResizedWindow = true;
 }
 
 function writeText() {
+  // map stories to images
   document.getElementById("stories").innerHTML = stories[0];
 }
 
@@ -61,6 +51,7 @@ function draw() {
 
 async function drawSpiral(isAnimating, delay) {
   randomSeed(seed);
+  // for gradient background
   fillGradient('linear', {
   from: [0, 0],
   to: [0, height],
@@ -75,7 +66,6 @@ async function drawSpiral(isAnimating, delay) {
   rect(0, 0, width, height);
 
   noStroke();
-  // fill(spiralColor);
 
   //position the spiral
   translate(width / 2, height / 2);
@@ -83,7 +73,6 @@ async function drawSpiral(isAnimating, delay) {
 
   push();
 
-  //position the spiral
   let prevX;
   let prevY;
 
