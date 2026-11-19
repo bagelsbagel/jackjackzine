@@ -16,12 +16,12 @@ let imagesCopy = [];
 
 function pickColors() {
   // set background & text colors
-  var bgColors = ["rgb(242, 242, 242)", "rgb(249, 255, 230)", "rgb(233, 247, 255)", "rgb(255, 255, 229)", "rgb(255, 245, 252)"];
-  var textColors = ["rgb(48, 48, 48)", "rgb(99, 161, 23)", "rgb(40, 118, 163)", "rgb(203, 141, 55)", "rgb(217, 32, 183)"]; 
+  var bgColors = ["rgb(242, 242, 242)"];
+  var textColors = ["rgb(48, 48, 48)"]; 
   var bgColor = random(bgColors);
   var textColor = random(textColors);
-  document.body.style.background = bgColor;
-  document.body.style.color = textColor;
+  // document.body.style.background = bgColor;
+  // document.body.style.color = textColor;
   return textColor;
 }
 
@@ -48,6 +48,20 @@ function writeText() {
 }
 
 function draw() {
+  fillGradient('linear', {
+  from: [0, 0],
+  to: [0, height],
+  steps: [
+    color("rgb(202, 202, 202)"),
+    color("rgb(255, 255, 255)"),
+    color("rgb(202, 202, 202)")
+  ]
+  })
+  noStroke();
+  rect(0, 0, width, height);
+
+  fill("rgb(48, 48, 48)")
+
   randomSeed(seed);
   noStroke();
   fill(spiralColor);
@@ -98,5 +112,5 @@ function draw() {
   }
 
   pop();
-  applyMonochromaticGrain(18);
+  applyMonochromaticGrain(16);
 }
