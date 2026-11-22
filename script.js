@@ -58,7 +58,7 @@ async function drawSpiral(isAnimating, delay) {
   steps: [
     color("rgb(122, 122, 122)"),
     color("rgb(255, 255, 255)"),
-    color("rgb(88, 88, 88)")
+    color("rgb(122, 122, 122)")
   ]
   });
 
@@ -96,7 +96,7 @@ async function drawSpiral(isAnimating, delay) {
         await sleep(delay);
       }
       // draw random images selectively in spiral
-      if ((i % 17 === 0 || i % 25 === 0) && imagesCopy.length > 0) {
+      if ((i % 17 === 0 || i % 31 === 0) && imagesCopy.length > 0) {
         const randomIndex = floor(random(imagesCopy.length));
         img = imagesCopy[randomIndex];
       // delete the image at the randomIndex
