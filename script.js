@@ -24,6 +24,7 @@ async function setup() {
   // log images created
   for (let i = 0; i < imageNames.length; i++) {
     images[i] = await loadImage(imageNames[i]);
+    images[i].name = imageNames[i];
   }
   imagesCopy = [...images];
 
@@ -38,9 +39,11 @@ function windowResized() {
   hasResizedWindow = true;
 }
 
-function writeText() {
+function writeText(imageName) {
   // map stories to images
-  document.getElementById("stories").innerHTML = stories[0];
+  // 'image/baby.png'
+  const storyIndex = imageNames.indexOf(imageName);
+  document.getElementById("stories").innerHTML = stories[storyIndex];
 }
 
 function draw() {
@@ -99,16 +102,18 @@ async function drawSpiral(isAnimating, delay) {
       if ((i % 17 === 0 || i % 31 === 0) && imagesCopy.length > 0) {
         const randomIndex = floor(random(imagesCopy.length));
         img = imagesCopy[randomIndex];
-      // delete the image at the randomIndex
-        imagesCopy.splice(randomIndex, 1);
         image(img, currentX, currentY, 100, 100, 0, 0, img.width, img.height, CONTAIN);
 
       // create invisible box above images
         const box = createDiv('');
+        box.id(imagesCopy[randomIndex].name);
         box.position(currentX + width / 2, currentY + height / 2);
         box.size(100, 100);
       // hover over image, writes text
-        box.mouseOver(writeText);
+        box.mouseOver(() => writeText(box.id()));
+
+        // delete the image at the randomIndex
+        imagesCopy.splice(randomIndex, 1);
       }
 
       prevX = currentX;
