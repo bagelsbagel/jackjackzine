@@ -5,7 +5,7 @@ const rInner = 0.02;
 const curve = 1.2;
 const symbolSize = 50;
 const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
-const imageNames = ['images/baby.png', 'images/basket_nobg.png', 'images/chair.jpg', 'images/flower.jpg', 'images/onatree_nobg.png', 'images/onatree1.jpg', 'images/plushie1.jpg', 'images/plushie2.jpg', 'images/sleeping.jpg', 'images/teaching.jpg', 'images/vetvisit.jpg', 'images/wrapped.jpg'];
+const imageNames = ['images/baby.png', 'images/basket_nobg.png', 'images/chair.jpg', 'images/flower.jpg', 'images/onatree_nobg.png', 'images/onatree1.jpg', 'images/plushie1.jpg', 'images/plushie2.jpg', 'images/sleeping.jpg', 'images/vetvisit.jpg', 'images/wrapped.jpg'];
 // make delay for spiral animationm
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 const seed = new Date().getTime(); // storeItem and getItem
@@ -59,9 +59,9 @@ async function drawSpiral(isAnimating, delay) {
   from: [0, 0],
   to: [0, height],
   steps: [
-    color("rgb(122, 122, 122)"),
+    color("rgb(100, 100, 100)"),
     color("rgb(255, 255, 255)"),
-    color("rgb(122, 122, 122)")
+    color("rgb(100, 100, 100)")
   ]
   });
 
@@ -79,7 +79,7 @@ async function drawSpiral(isAnimating, delay) {
   let prevX;
   let prevY;
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 1; i < n; i++) {
     const selectedSymbol = random(symbols);
     const t = i / (n - 1);
     const angle = t * turns * TWO_PI;
@@ -92,6 +92,15 @@ async function drawSpiral(isAnimating, delay) {
 
     const bufferDistance = 15; // minimum distance between symbols
     if (!prevX || !prevY || dist(prevX, prevY, currentX, currentY) > bufferDistance) {
+      fill(fillGradient('linear', {
+      from: [0, 0],
+      to: [0, height],
+      steps: [
+        color("rgb(185, 185, 185)"),
+        color("rgb(255, 255, 255)"),
+        color("rgb(185, 185, 185)")
+      ]
+      }));
       // draw random symbols
       text(selectedSymbol, currentX, currentY);
       // check if user resizes window, if they do stop the animation
@@ -99,7 +108,7 @@ async function drawSpiral(isAnimating, delay) {
         await sleep(delay);
       }
       // draw random images selectively in spiral
-      if ((i % 17 === 0 || i % 31 === 0) && imagesCopy.length > 0) {
+      if ((i % 17 === 0 || i % 37 === 0) && imagesCopy.length > 0) {
         const randomIndex = floor(random(imagesCopy.length));
         img = imagesCopy[randomIndex];
         image(img, currentX, currentY, 100, 100, 0, 0, img.width, img.height, CONTAIN);

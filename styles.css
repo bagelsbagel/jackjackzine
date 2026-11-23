@@ -18,8 +18,25 @@ header h1 {
   margin: 0;
   text-align: left;
   position: absolute;
-  top: 40px;
-  left: 40px;
+  top: 30px;
+  left: 30px;
+}
+
+#intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+#intro p {
+  position: absolute;
+  top: 120px;
+  left: 30px;
+  bottom: 30px;
+  margin: 0;
+  text-align: left;
+  width: 20vw;
+  height: 100vh;
 }
 
 #stories {
@@ -30,22 +47,22 @@ header h1 {
 
 #stories p {
   position: absolute;
-  top: 40px;
-  right: 40px;
-  bottom: 40px;
-  width: 45vw;
+  top: 30px;
+  right: 20px;
+  bottom: 30px;
+  width: 17vw;
   margin: 0;
-  text-align: right;
+  text-align: start;
 }
 
-/* shaped text matching spiral edges */
+/* shaped text matching spiral edges
 #stories p::before {
   content: "";
   float: left;
   width: 30vw;
   height: 100vh;
   shape-outside: ellipse(100% 50% at 0% 50%);
-}
+} */
 
 /* spiral canvas */
 canvas {
@@ -70,6 +87,6 @@ p {
   text-align: right;
 }
 
-:lang(kr) {
+:lang(ko) {
   font-family: "Nanum Gothic", sans-serif;
 }

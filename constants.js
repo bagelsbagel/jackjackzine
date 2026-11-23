@@ -1,11 +1,7 @@
 const whereWeFoundHim = `
     <p>jack-jack (<span lang="kr">짹짹</span>) is a crow who came into our lives on a random day in May. My parents were on their way to Costco, on another of their errands, when they happened to spot a small crow, hunched over on the grass. They didn’t think much of it. They went on with their day.
     <br><br>On the drive back, the sun was setting, and my dad said “Let’s check if that crow is still there, just in case.” To their surprise, it was still on the grass, hunched over, with its head weighing heavily and its beak almost pushed into the mud.
-    <br><br>They couldn’t leave him to get eaten by a coyote overnight. And so, they brought a cardboard box and blanket, and gloves to pick up the bird. It didn’t budge while my mom scooped it gently into the box. A horde of crows flew in a wild circle overhead, cawing as if in protest of the humans taking away one of their own. My mom yelled up at them “What are we supposed to do? We’re sorry! I’m sorry.”</p>
-`;
-
-const birdSanctuary = `
-    <p>None of the bird sanctuaries would take him. We looked up a wild animal veterinarian and drove 50 minutes to see her. The vet plucked out maggots, prescribed antibiotics, and recommended canned kitten food. We took him home.</p>
+    <br><br>They couldn’t leave him to get eaten by a coyote overnight. And so, they brought a cardboard box and blanket, and gloves to pick up the bird. It didn’t budge while my mom scooped it gently into the box. A horde of crows flew in a wild circle overhead, cawing as if in protest. My mom yelled up at them “What are we supposed to do? We’re sorry!”</p>
 `;
 
 const jackjacksName = `
@@ -26,7 +22,7 @@ const rowingMachine = `
 
 const stickLibrary = `
     <p>We learned that <span lang="kr">짹짹</span> really loves sticks! I got him a long branch from a tree outside, and I showed it to him. He chirped and hopped up onto it. He didn’t want to leave the stick. To take him anywhere, all I had to do was present him with a good stick.
-    <br><br>Years later, I saw a Stick Library for dogs. I thought about how <span lang="kr">짹짹</span> would love that too.</p>
+    <br><br>When I discovered a Stick Library for dogs, I thought about how <span lang="kr">짹짹</span> would love that too.</p>
 `;
 
 const blueEyes = `
@@ -46,7 +42,7 @@ const flyingCrows = `
 const colorPink = `
     <p>Did you know that crows see a wider range of colors including UV light?
     <br><br>They might seem all black to us, but if you spot a crow in your backyard on a bright sunny day, and the sunshine hits their feathers in just the right way, you can see a slight glimmer of rainbow, like oil.
-    <br><br>I learned that <span lang="kr">짹짹</span> loves the color pink. He would start shrieking and flapping his wings whenever I showed him my pink highlighter. Watermelon cubes soon became his favorite food. Whenever we show him a flash of bright pink watermelon in a cup, he would flap his wings, screaming, and peck desperately at the watermelon bits.
+    <br><br>I learned that <span lang="kr">짹짹</span> loves the color pink. He would start shrieking and flapping his wings whenever I showed him my pink highlighter. Watermelon cubes soon became his favorite food. Whenever we show him a flash of bright pink watermelon in a cup, he would flap his wings, screaming, and peck frantically at the watermelon bits.
     <br><br>One day, we were sitting outside in our backyard with <span lang="kr">짹짹</span>. There were bright pink flower petals scattered over our concrete floor, and <span lang="kr">짹짹</span> picked up the flower petals piece by piece, letting each of them go to flutter in the wind.</p>
 `;
 
@@ -83,4 +79,4 @@ const endingNote = `
 `;
 
 // everything in an array
-const stories = [whereWeFoundHim, birdSanctuary, jackjacksName, waitingOutside, rowingMachine, stickLibrary, blueEyes, avianFlu, flyingCrows, colorPink, integrating, twoMonths, theDayHeLeft, endingNote];
+const stories = [jackjacksName, waitingOutside, rowingMachine, stickLibrary, blueEyes, avianFlu, flyingCrows, colorPink, integrating, twoMonths, theDayHeLeft, endingNote];
