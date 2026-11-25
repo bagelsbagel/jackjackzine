@@ -47,7 +47,6 @@ async function setup() {
   imagesCopy = [...images];
 
   await drawSpiral(true, 30);
-  // noLoop();
 }
 
 function windowResized() {
@@ -139,22 +138,28 @@ async function drawSpiral(isAnimating, delay) {
         const randomIndex = floor(random(imagesCopy.length));
         img = imagesCopy[randomIndex];
         let { currentWidth, targetWidth } = imageScale[img.name];
+      
+        // update imgToDraw to img with gray filter when gray is true
+        const state = imageScale[img.name];
+        const imgToDraw = state.gray ? state.grayImg : img;
 
+        // transition
         imageScale[img.name].currentWidth = lerp(currentWidth, targetWidth, 0.7);
+        // draw image
         image(
-          img,
+          imgToDraw,
           currentX,
           currentY,
           imageScale[img.name].currentWidth,
           imageScale[img.name].currentWidth,
           0,
           0,
-          img.width,
-          img.height,
+          imgToDraw.width,
+          imgToDraw.height,
           CONTAIN
         );
 
-        // indicate img with #'s in circles
+        // add #'s in circles
         noFill();
         strokeWeight(1);
         stroke("black");
@@ -184,23 +189,41 @@ async function drawSpiral(isAnimating, delay) {
 
         // create invisible box above images
         const box = createDiv("");
+
         // from the copy array, at some random index, get the name of the image
         // set the id of the box div to this specific name 
         box.id(imagesCopy[randomIndex].name);
-        box.position(currentX + width / 2 - imageScale[img.name].currentWidth / 2, currentY + height / 2 - imageScale[img.name].currentWidth / 2);
+        // account for centered image
+        box.position(
+          currentX + width / 2 - imageScale[img.name].currentWidth / 2, 
+          currentY + height / 2 - imageScale[img.name].currentWidth / 2);
+        // match box size to image size (even when growing)
         box.size(imageScale[img.name].currentWidth, imageScale[img.name].currentWidth);
 
-        // hover over image, target image effects and write text
+        // upon hover
         box.mouseOver(() => {
+          // write corresponding story to image
           writeText(box.id());
+          const state = imageScale[box.id()];
 
+          // gray variable is undefined until image hover
+          if (!state.grayImg) {
+              const original = images.find((img) => img.name === box.id());
+              const grayImg = original.get();
+              grayImg.filter(GRAY);        
+              state.grayImg = grayImg;
+            }
+          
+          // scale up the target image
           imageScale[box.id()] = {
-            ...imageScale[box.id()],
+            ...state,
             targetWidth: 160,
+            gray: true,
           };
         });
 
-        box.mouseOut(() => {        
+        box.mouseOut(() => {     
+          // when mouse stops hovering, transition back to default img size   
           imageScale[box.id()] = {
             ...imageScale[box.id()],
             targetWidth: 120,

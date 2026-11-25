@@ -28,6 +28,7 @@ header h1 {
   align-items: start;
 }
 
+/* left text about jack-jack */
 #intro p {
   position: absolute;
   top: 120px;
@@ -39,6 +40,7 @@ header h1 {
   height: 100vh;
 }
 
+/* right text with stories corresponding to images */
 #stories {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -54,15 +56,6 @@ header h1 {
   margin: 0;
   text-align: start;
 }
-
-/* shaped text matching spiral edges
-#stories p::before {
-  content: "";
-  float: left;
-  width: 30vw;
-  height: 100vh;
-  shape-outside: ellipse(100% 50% at 0% 50%);
-} */
 
 /* spiral canvas */
 canvas {

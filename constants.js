@@ -81,7 +81,6 @@ const vetVisit = `
 //     <br><br>We spent 2 whole months with him - every day a new surprise at how much love, and hope, and dreaming we had for one baby crow.</p>
 // `;
 
-// everything in an array
 const stories = [theDayHeWasFound, 
     waitingOutside, 
     rowingMachine, 
