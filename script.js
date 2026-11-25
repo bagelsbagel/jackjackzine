@@ -5,42 +5,49 @@ const rInner = 0.02;
 const curve = 1.2;
 const symbolSize = 50;
 const symbols = ["✴︎˚", "𓅪", " ོ", "⠙", "⠤", "⠷", "⟡", "⊹", "⋆.˚", "✦", "࿔"];
-const imageNames = ['images/wrapped.jpg', 
-  'images/baby.png', 
-  'images/chair.jpg', 
-  'images/sleeping.jpg', 
-  'images/basket_nobg.png', 
-  'images/plushie1.jpg', 
-  'images/onatree1.jpg', 
-  'images/flower.jpg', 
-  'images/vetvisit.jpg', 
-  'images/onatree_nobg.png'];
+const imageNames = [
+  "images/wrapped.jpg",
+  "images/baby.png",
+  "images/chair.jpg",
+  "images/sleeping.jpg",
+  "images/basket_nobg.png",
+  "images/plushie1.jpg",
+  "images/onatree1.jpg",
+  "images/flower.jpg",
+  "images/onatree_nobg.png",
+  "images/vetvisit.jpg",
+];
 
 // make delay for spiral animationm
-const sleep = ms => new Promise(res => setTimeout(res, ms));
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 const seed = new Date().getTime(); // storeItem and getItem
+const images = []; // do not delete contents
+const imageScale = {}; // map of the image name to the image scale
 
 let img;
-let images = []; // do not delete contents
 let imagesCopy = [];
 let hasResizedWindow = false;
-// set scaling variables here
 
 async function setup() {
   loadingAnimation();
   randomSeed(seed);
   createCanvas(windowWidth, windowHeight);
   p5grain.setup();
+  imageMode(CENTER);
 
   // log images created
   for (let i = 0; i < imageNames.length; i++) {
     images[i] = await loadImage(imageNames[i]);
     images[i].name = imageNames[i];
+    imageScale[imageNames[i]] = {
+      currentWidth: 120,
+      targetWidth: 120,
+    };
   }
   imagesCopy = [...images];
 
   await drawSpiral(true, 30);
-  noLoop();
+  // noLoop();
 }
 
 function windowResized() {
@@ -56,12 +63,6 @@ function writeText(imageName) {
   document.getElementById("stories").innerHTML = stories[storyIndex];
 }
 
-function imageEffects(imgObject, imgX, imgY) {
-  // add image effects
-  imgObject.resize(100, 0);
-  image(imgObject, imgX, imgY);
-}
-
 function draw() {
   imagesCopy = [...images];
   drawSpiral();
@@ -70,15 +71,16 @@ function draw() {
 
 async function drawSpiral(isAnimating, delay) {
   randomSeed(seed);
+
   // for gradient background
-  fillGradient('linear', {
-  from: [0, 0],
-  to: [0, height],
-  steps: [
-    color("rgb(100, 100, 100)"),
-    color("rgb(255, 255, 255)"),
-    color("rgb(100, 100, 100)")
-  ]
+  fillGradient("linear", {
+    from: [0, 0],
+    to: [0, height],
+    steps: [
+      color("rgb(100, 100, 100)"),
+      color("rgb(255, 255, 255)"),
+      color("rgb(100, 100, 100)"),
+    ],
   });
 
   noStroke();
@@ -103,68 +105,108 @@ async function drawSpiral(isAnimating, delay) {
 
     textSize(30);
 
-    let currentX = Math.cos(angle) * r;
-    let currentY = Math.sin(angle) * r;
+    const currentX = Math.cos(angle) * r;
+    const currentY = Math.sin(angle) * r;
 
     const bufferDistance = 15; // minimum distance between symbols
-    if (!prevX || !prevY || dist(prevX, prevY, currentX, currentY) > bufferDistance) {
-      
-      fill(fillGradient('linear', {
-      from: [0, 0],
-      to: [0, height],
-      steps: [
-        color("rgb(185, 185, 185)"),
-        color("rgb(255, 255, 255)"),
-        color("rgb(185, 185, 185)")
-      ]
-      }));
+    if (
+      !prevX ||
+      !prevY ||
+      dist(prevX, prevY, currentX, currentY) > bufferDistance
+    ) {
+      fill(
+        fillGradient("linear", {
+          from: [0, 0],
+          to: [0, height],
+          steps: [
+            color("rgb(185, 185, 185)"),
+            color("rgb(255, 255, 255)"),
+            color("rgb(185, 185, 185)"),
+          ],
+        })
+      );
 
       // draw random symbols
       text(selectedSymbol, currentX, currentY);
+
       // check if user resizes window, if they do stop the animation
       if (isAnimating && !hasResizedWindow) {
         await sleep(delay);
       }
+
       // draw random images selectively in spiral
       if ((i % 17 === 0 || i % 79 === 0) && imagesCopy.length > 0) {
         const randomIndex = floor(random(imagesCopy.length));
         img = imagesCopy[randomIndex];
-        image(img, currentX, currentY, 120, 120, 0, 0, img.width, img.height, CONTAIN);
-      
-      // indicate img with #'s in circles
+        let { currentWidth, targetWidth } = imageScale[img.name];
+
+        imageScale[img.name].currentWidth = lerp(currentWidth, targetWidth, 0.7);
+        image(
+          img,
+          currentX,
+          currentY,
+          imageScale[img.name].currentWidth,
+          imageScale[img.name].currentWidth,
+          0,
+          0,
+          img.width,
+          img.height,
+          CONTAIN
+        );
+
+        // indicate img with #'s in circles
         noFill();
         strokeWeight(1);
-        stroke('black');
-        circle(currentX - 15, currentY + 5, 20);
+        stroke("black");
+        circle(currentX - 75, currentY - 50, 20);
         noStroke();
-        fill('black');
+        fill("black");
         textSize(18);
-      // # corresponds to order of story
-        text(imageNames.indexOf(imagesCopy[randomIndex].name), currentX - 20, currentY + 11);
 
-      fill(fillGradient('linear', {
-      from: [0, 0],
-      to: [0, height],
-      steps: [
-        color("rgb(185, 185, 185)"),
-        color("rgb(255, 255, 255)"),
-        color("rgb(185, 185, 185)")
-      ]
-      }));
+        // # corresponds to order of story
+        text(
+          imageNames.indexOf(imagesCopy[randomIndex].name),
+          currentX - 80,
+          currentY - 44
+        );
 
-      // create invisible box above images
-        const box = createDiv('');
+        fill(
+          fillGradient("linear", {
+            from: [0, 0],
+            to: [0, height],
+            steps: [
+              color("rgb(185, 185, 185)"),
+              color("rgb(255, 255, 255)"),
+              color("rgb(185, 185, 185)"),
+            ],
+          })
+        );
+
+        // create invisible box above images
+        const box = createDiv("");
+        // from the copy array, at some random index, get the name of the image
+        // set the id of the box div to this specific name 
         box.id(imagesCopy[randomIndex].name);
-        box.position(currentX + width / 2, currentY + height / 2);
-        box.size(100, 100);
+        box.position(currentX + width / 2 - imageScale[img.name].currentWidth / 2, currentY + height / 2 - imageScale[img.name].currentWidth / 2);
+        box.size(imageScale[img.name].currentWidth, imageScale[img.name].currentWidth);
 
-        // clone imagesCopy array before splicing
-        const someImageObject = imagesCopy[randomIndex].get();
         // hover over image, target image effects and write text
         box.mouseOver(() => {
           writeText(box.id());
-          imageEffects(someImageObject, currentX, currentY);
+
+          imageScale[box.id()] = {
+            ...imageScale[box.id()],
+            targetWidth: 160,
+          };
         });
+
+        box.mouseOut(() => {        
+          imageScale[box.id()] = {
+            ...imageScale[box.id()],
+            targetWidth: 120,
+          };
+        });
+
 
         // delete the image at the randomIndex
         imagesCopy.splice(randomIndex, 1);
