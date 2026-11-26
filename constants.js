@@ -75,12 +75,6 @@ const vetVisit = `
 //     <br><br>I wrote him a letter, which I buried with him.</p>
 // `;
 
-// const endingNote = `
-//     <p><span lang="kr">짹짹</span> was a baby crow who came into our lives on a random summer day in May.
-//     <br><br>The way my dad put it, our house was a resting place, to discover life and to learn love, before crossing the rainbow bridge.
-//     <br><br>We spent 2 whole months with him - every day a new surprise at how much love, and hope, and dreaming we had for one baby crow.</p>
-// `;
-
 const stories = [theDayHeWasFound, 
     waitingOutside, 
     rowingMachine, 
