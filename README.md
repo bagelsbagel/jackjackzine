@@ -6,6 +6,8 @@ This was made for SFPC's Zine-Making for the Web class, and built in November 20
 
 ## visuals
 
+<img width="1359" height="720" alt="Screenshot 2026-11-26 at 7 18 52 PM" src="https://github.com/user-attachments/assets/960b0cfb-aa9e-40d1-b7ca-b4042970b368" />
+
 ## iterations
 
 A few ideas were discarded, transformed, or revived through multiple iterations. The webzine is intended to be a non-linear narrative in the form of a spiral, but number markers were added to nudge the reader to engage with jack-jack's stories in a recommended order. Some stories were also pared down or edited out for clarity. Styling updates and new interactions were introduced later on, like the spiral animation and image effects on hover.
